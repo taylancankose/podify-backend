@@ -38,6 +38,18 @@ app.use("/history", historyRouter);
 
 const PORT = process.env.PORT || 8080;
 
+app.get("/", (req, res) => {
+  res.json({
+    alive: true,
+  });
+});
+
+app.get("*", (req, res) => {
+  res.status(404).json({
+    error: "Not Found!",
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`PORT is listening on ${PORT}`);
 });
