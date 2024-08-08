@@ -94,7 +94,7 @@ export const sendReVerificationToken: RequestHandler = async (req, res) => {
   });
 
   // send mail this newToken
-  sendVerificationMail(token, {
+  await sendVerificationMail(token, {
     name: user?.name,
     email: user?.email,
     userId: user?._id.toString(),
@@ -124,7 +124,7 @@ export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
 
   const resetLink = `${PASSWORD_RESET_LINK}?token=${token}&userId=${user._id}`;
 
-  sendForgetPasswordLink({ email: user.email, link: resetLink });
+  await sendForgetPasswordLink({ email: user.email, link: resetLink });
 
   res.json({ message: "Check you registered mail." });
 };
@@ -155,7 +155,7 @@ export const updatePassword: RequestHandler = async (req, res) => {
   await PasswordResetToken.findOneAndDelete({ owner: userId._id });
 
   // send success email
-  sendPasswordResetSuccessEmail(user.name, user.email);
+  await sendPasswordResetSuccessEmail(user.name, user.email);
 
   res.json({ message: "Password reset successfully" });
 };
