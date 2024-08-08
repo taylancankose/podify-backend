@@ -84,15 +84,17 @@ export const sendVerificationMail = async (token: string, profile: Profile) => {
   //   })
   //   .then(console.log, console.error);
 
-  client.send({
-    from: sender,
-    to: recipients,
-    template_uuid: "ce1e6712-a9b1-4a3d-bc8c-64e41b739746",
-    template_variables: {
-      user_name: name,
-      token: token,
-    },
-  });
+  client
+    .send({
+      from: sender,
+      to: recipients,
+      template_uuid: "ce1e6712-a9b1-4a3d-bc8c-64e41b739746",
+      template_variables: {
+        user_name: name,
+        token: token,
+      },
+    })
+    .catch((err: any) => console.log("Mail issue ", err));
 };
 
 // token = 6 digit OTP token => 123456 => send to your API
@@ -122,15 +124,17 @@ export const sendForgetPasswordLink = async (options: Options) => {
     },
   ];
 
-  client.send({
-    from: sender,
-    to: recipients,
-    template_uuid: "59004a70-67d7-444c-9e43-0f0993f4dd81",
-    template_variables: {
-      user_email: "email",
-      pass_reset_link: link,
-    },
-  });
+  client
+    .send({
+      from: sender,
+      to: recipients,
+      template_uuid: "59004a70-67d7-444c-9e43-0f0993f4dd81",
+      template_variables: {
+        user_email: "email",
+        pass_reset_link: link,
+      },
+    })
+    .catch((err: any) => console.log("Mail issue ", err));
 
   // transport.sendMail({
   //   to: email,
@@ -170,15 +174,17 @@ export const sendPasswordResetSuccessEmail = async (
     name: "Password Reset Success",
   };
 
-  client.send({
-    from: sender,
-    to: [{ email }],
-    template_uuid: "5a5c80f6-04f6-4c07-af0f-0ffa05c2f923",
-    template_variables: {
-      user_name: name,
-      user_email: email,
-    },
-  });
+  client
+    .send({
+      from: sender,
+      to: [{ email }],
+      template_uuid: "5a5c80f6-04f6-4c07-af0f-0ffa05c2f923",
+      template_variables: {
+        user_name: name,
+        user_email: email,
+      },
+    })
+    .catch((err: any) => console.log("Mail issue ", err));
 
   // transport.sendMail({
   //   to: email,
