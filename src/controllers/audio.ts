@@ -30,6 +30,11 @@ export const createAudio: RequestHandler = async (
       resource_type: "video",
     });
 
+    const resCategory = Array.isArray(req.body.category)
+      ? req.body.category.join(", ")
+      : req.body.category;
+    console.log(resCategory);
+
     const newAudio = new Audio({
       title: title[0],
       about: about[0],
@@ -139,11 +144,9 @@ export const getLatestUploads: RequestHandler = async (req, res) => {
 
     res.json({ audios });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while fetching the latest uploads",
-        error,
-      });
+    res.status(500).json({
+      message: "An error occurred while fetching the latest uploads",
+      error,
+    });
   }
 };
