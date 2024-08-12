@@ -38,7 +38,7 @@ export const createAudio: RequestHandler = async (
     const newAudio = new Audio({
       title: title[0],
       about: about[0],
-      category: category[0],
+      category: resCategory,
       owner: ownerId,
       file: { url: audioRes?.url, publicId: audioRes?.public_id },
     });
