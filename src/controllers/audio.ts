@@ -30,15 +30,10 @@ export const createAudio: RequestHandler = async (
       resource_type: "video",
     });
 
-    const resCategory = Array.isArray(req.body.category)
-      ? req.body.category.join(", ")
-      : req.body.category;
-    console.log(resCategory);
-
     const newAudio = new Audio({
-      title: title[0],
-      about: about[0],
-      category: resCategory,
+      title: Array.isArray(title) ? title[0] : title,
+      about: Array.isArray(about) ? about[0] : about,
+      category: Array.isArray(category) ? category[0] : category,
       owner: ownerId,
       file: { url: audioRes?.url, publicId: audioRes?.public_id },
     });
