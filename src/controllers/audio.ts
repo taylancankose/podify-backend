@@ -26,7 +26,7 @@ export const createAudio: RequestHandler = async (
     if (!audioFile)
       return res.status(422).json({ error: "Audio file is missing!" });
 
-    const audioRes = await cloudinary.uploader.upload(audioFile[0].filepath, {
+    const audioRes = await cloudinary.uploader.upload(audioFile[0]?.filepath, {
       resource_type: "video",
     });
 
@@ -35,10 +35,10 @@ export const createAudio: RequestHandler = async (
       about: about[0],
       category: category[0],
       owner: ownerId,
-      file: { url: audioRes.url, publicId: audioRes.public_id },
+      file: { url: audioRes?.url, publicId: audioRes?.public_id },
     });
     if (poster) {
-      const posterRes = await cloudinary.uploader.upload(poster[0].filepath, {
+      const posterRes = await cloudinary.uploader.upload(poster[0]?.filepath, {
         width: 300,
         height: 300,
         crop: "thumb",
@@ -46,8 +46,8 @@ export const createAudio: RequestHandler = async (
       });
 
       newAudio.poster = {
-        url: posterRes.secure_url,
-        publicId: posterRes.public_id,
+        url: posterRes?.secure_url,
+        publicId: posterRes?.public_id,
       };
     }
     await newAudio.save();
@@ -56,8 +56,8 @@ export const createAudio: RequestHandler = async (
       audio: {
         title,
         about,
-        file: newAudio.file.url,
-        poster: newAudio.poster?.url,
+        file: newAudio?.file.url,
+        poster: newAudio?.poster?.url,
       },
     });
   } catch (error) {
@@ -88,7 +88,7 @@ export const updateAudio: RequestHandler = async (
         await cloudinary.uploader.destroy(audio.poster?.publicId);
       }
 
-      const posterRes = await cloudinary.uploader.upload(poster[0].filepath, {
+      const posterRes = await cloudinary.uploader.upload(poster[0]?.filepath, {
         width: 300,
         height: 300,
         crop: "thumb",
@@ -124,13 +124,13 @@ export const getLatestUploads: RequestHandler = async (req, res) => {
 
   const audios = list.map((item) => {
     return {
-      id: item._id,
-      title: item.title,
-      about: item.about,
-      category: item.category,
-      file: item.file.url,
-      poster: item.poster?.url,
-      owner: { name: item.owner.name, id: item.owner._id },
+      id: item?._id,
+      title: item?.title,
+      about: item?.about,
+      category: item?.category,
+      file: item?.file.url,
+      poster: item?.poster?.url,
+      owner: { name: item?.owner.name, id: item?.owner._id },
     };
   });
 
