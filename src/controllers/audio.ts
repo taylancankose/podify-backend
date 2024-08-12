@@ -117,22 +117,33 @@ export const updateAudio: RequestHandler = async (
 };
 
 export const getLatestUploads: RequestHandler = async (req, res) => {
-  const list = await Audio.find()
-    .sort("-createdAt")
-    .limit(10)
-    .populate<PopulatedFavList>("owner");
+  try {
+    const list = await Audio.find()
+      .sort("-createdAt")
+      .limit(10)
+      .populate<PopulatedFavList>("owner");
 
-  const audios = list.map((item) => {
-    return {
-      id: item?._id,
-      title: item?.title,
-      about: item?.about,
-      category: item?.category,
-      file: item?.file.url,
-      poster: item?.poster?.url,
-      owner: { name: item?.owner.name, id: item?.owner._id },
-    };
-  });
+    const audios = list.map((item) => {
+      return {
+        id: item?._id,
+        title: item?.title,
+        about: item?.about,
+        category: item?.category,
+        file: item?.file.url,
+        poster: item?.poster?.url,
+        owner: item?.owner
+          ? { name: item.owner.name, id: item.owner._id }
+          : { name: "Unknown", id: "Unknown" }, // Owner yoksa varsayılan değerler
+      };
+    });
 
-  res.json({ audios });
+    res.json({ audios });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "An error occurred while fetching the latest uploads",
+        error,
+      });
+  }
 };
