@@ -16,7 +16,7 @@ router.post(
   mustAuth, // must logged in
   isVerified, // findout authed user is verified or not. verified email id users only upload audio....
   fileParser, // dosya kontrolü
-  validate(AudioValidationSchema), // audioVerficationSchema yı validate et
+  // validate(AudioValidationSchema), // audioVerficationSchema yı validate et
   createAudio
 );
 

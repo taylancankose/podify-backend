@@ -19,6 +19,7 @@ export const createAudio: RequestHandler = async (
 ) => {
   try {
     const { title, about, category } = req.body;
+    console.log(req.body);
     const poster = req.files?.poster;
     const audioFile = req.files?.file;
     const ownerId = req.user.id;
