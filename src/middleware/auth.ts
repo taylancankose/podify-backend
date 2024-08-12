@@ -33,12 +33,24 @@ export const mustAuth: RequestHandler = async (req, res, next) => {
   // tokeni extract ediyoruz
   const { authorization } = req.headers;
   const token = authorization?.split("Bearer ")[1];
+  console.log(authorization);
   // check if there is a token
   if (!token) return res.status(403).json({ error: "Unauthorized request" });
 
-  // verify the token
-  const verifiedToken = verify(token, JWT_SECRET) as JwtPayload;
-  const id = verifiedToken.userId;
+  let id;
+  try {
+    // verify the token
+    const verifiedToken = verify(token, JWT_SECRET) as JwtPayload;
+    id = verifiedToken.userId;
+    // user fetch logic here
+  } catch (error: any) {
+    if (error.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .json({ message: "Token expired, please log in again" });
+    }
+    return res.status(403).json({ message: "Unauthorized request" });
+  }
   // find the user with id above
   const user = await User.findOne({ _id: id, tokens: token });
   // check if there is a user
