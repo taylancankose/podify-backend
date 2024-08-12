@@ -178,7 +178,9 @@ export const login: RequestHandler = async (req, res) => {
     return res.status(403).json({ error: "Password is not correct" });
   // asd
   // if matched, generate the token
-  const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+  const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+    expiresIn: "10d",
+  });
   // {expiresIn: "10d", // tokenin expire süresi '30d' 30 gün, '1d' 1 gün});
   // 2. verilen şey random secret key
   user.tokens.push(token);
